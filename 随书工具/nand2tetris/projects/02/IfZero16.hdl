@@ -1,0 +1,7 @@
+CHIP IfZero16 {
+    IN isZero, in[16];
+    OUT out[16];
+    PARTS:
+        ExpandBool16(in = false, out = false16);
+        Mux16(a = in[0..15], b = false16, sel = isZero, out = out);
+}
