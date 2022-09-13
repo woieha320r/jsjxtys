@@ -18,6 +18,8 @@ public class Parser implements Closeable {
 
     private String currentLine;
 
+    private InstructionType instructionType;
+
     private boolean hasMoreLinesLastTime;
 
     @SuppressWarnings("unused")
@@ -71,10 +73,11 @@ public class Parser implements Closeable {
      */
     @Nullable
     public InstructionType instructionType() {
-        return currentLine.startsWith("@") ? InstructionType.A
+        instructionType = currentLine.startsWith("@") ? InstructionType.A
                 : (currentLine.startsWith("(") && currentLine.endsWith(")")) ? InstructionType.L
                 : (currentLine.contains("=") || currentLine.contains(";")) ? InstructionType.C
                 : null;
+        return instructionType;
     }
 
     /**
@@ -85,7 +88,6 @@ public class Parser implements Closeable {
     @Nullable
     public String symbol() {
         String symbol;
-        InstructionType instructionType = instructionType();
         switch (instructionType) {
             case A:
                 symbol = currentLine.substring(1);
@@ -106,7 +108,7 @@ public class Parser implements Closeable {
      */
     @Nullable
     public String dest() {
-        String dest = (Objects.equals(instructionType(), InstructionType.C) && currentLine.contains("="))
+        String dest = (Objects.equals(instructionType, InstructionType.C) && currentLine.contains("="))
                 ? currentLine.substring(0, currentLine.indexOf("="))
                 : null;
         return Objects.isNull(dest) ? null : dest.trim();
@@ -119,7 +121,7 @@ public class Parser implements Closeable {
      */
     @Nullable
     public String comp() {
-        if (!Objects.equals(instructionType(), InstructionType.C)) {
+        if (!Objects.equals(instructionType, InstructionType.C)) {
             return null;
         }
         String comp = currentLine;
@@ -139,7 +141,7 @@ public class Parser implements Closeable {
      */
     @Nullable
     public String jump() {
-        String jump = (Objects.equals(instructionType(), InstructionType.C) && currentLine.contains(";"))
+        String jump = (Objects.equals(instructionType, InstructionType.C) && currentLine.contains(";"))
                 ? currentLine.substring(currentLine.lastIndexOf(";") + 1)
                 : null;
         return Objects.isNull(jump) ? null : jump.trim();
@@ -167,11 +169,13 @@ public class Parser implements Closeable {
                 "\t\n" +
                 "\t// END\n" +
                 "    \n";
-        File asmFile = new File("./test.asm");
-        if (asmFile.exists()) {
-            asmFile.delete();
+        String asmFileName = "./test.asm";
+        File asmFile = new File(asmFileName);
+        if (asmFile.exists() && !asmFile.delete()) {
+            throw new IOException(asmFileName + "已存在，删除失败");
+        } else if (!asmFile.createNewFile()) {
+            throw new IOException(asmFileName + "文件创建失败");
         }
-        asmFile.createNewFile();
         try (FileWriter asmFileWriter = new FileWriter(asmFile)) {
             asmFileWriter.write(asmFileContent);
             asmFileWriter.flush();

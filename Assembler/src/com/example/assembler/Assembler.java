@@ -100,11 +100,13 @@ public class Assembler {
             try (Parser parser = new Parser(asmFile)) {
                 assembler.recordSymbol(parser, symbolTable);
             }
-            File hackFile = new File(asmFilePath.split(".asm")[0] + ".hack");
-            if (hackFile.exists()) {
-                hackFile.delete();
+            String hackFileName = asmFilePath.split(".asm")[0] + ".hack";
+            File hackFile = new File(hackFileName);
+            if (hackFile.exists() && !hackFile.delete()) {
+                throw new IOException(hackFileName + "已存在，删除失败");
+            } else if (!hackFile.createNewFile()) {
+                throw new IOException(hackFileName + "文件创建失败");
             }
-            hackFile.createNewFile();
             try (Parser parser = new Parser(asmFile);
                  FileWriter hackFileWriter = new FileWriter(hackFile)
             ) {

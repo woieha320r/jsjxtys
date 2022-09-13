@@ -33,11 +33,3 @@
     Or(a=lowHasTrue, b=highHasTrue, out=out);
     // 当有两个地方同时需要结果值时，可以被指定多次：Or(a=true, b=false, out=waitOtherOpt, out=out);
 ```
-
-### 不足
-```text
-· 不知道振荡器、数据触发器能否实现，在《我的世界》造CPU那人咋实现的🤔️
-· ROM不能动态加载程序
-· 屏幕只有图形模式，没有字符模式。键盘不能按组合键
-· 汇编不知道能不能自举，没试
-```
