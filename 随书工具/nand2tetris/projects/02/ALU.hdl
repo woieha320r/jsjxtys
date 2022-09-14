@@ -42,14 +42,48 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-    // Put you code here:
-    IfZero16(in = x[0..15], isZero = zx, out = judgeZeroX);
-    IfNot16(in = judgeZeroX, isNot = nx, out = judgeNotX);
-    IfZero16(in = y[0..15], isZero = zy, out = judgeZeroY);
-    IfNot16(in = judgeZeroY, isNot = ny, out = judgeNotY);
-    AddOrAnd16(a = judgeNotX, b = judgeNotY, isAdd = f, out = waitJudgeOut);
-    IfNot16(in = waitJudgeOut, isNot = no, out = hasOut);
-    Or16(a = hasOut, b = false, out = out);
-    IsZero16(in = hasOut, out = zr);
-    LessThanZero16(in = hasOut, out = ng);
+    // 所有条件分支通过选择器实现
+
+    // zx
+    And16(a=x[0..15], b[0..15]=false, out=zeroX);
+    Mux16(a=x[0..15], b=zeroX, sel=zx, out=afterZx);
+
+    // nx
+    Not16(in=afterZx, out=notX);
+    Mux16(a=afterZx, b=notX, sel=nx, out=afterNx);
+
+    // zy
+    And16(a=y[0..15], b[0..15]=false, out=zeroY);
+    Mux16(a=y[0..15], b=zeroY, sel=zy, out=afterZy);
+
+    // ny
+    Not16(in=afterZy, out=notY);
+    Mux16(a=afterZy, b=notY, sel=ny, out=afterNy);
+
+    // f
+    Add16(a=afterNx, b=afterNy, out=addXy);
+    And16(a=afterNx, b=afterNy, out=andXy);
+    Mux16(a=andXy, b=addXy, sel=f, out=afterF);
+
+    // no
+    Not16(in=afterF, out=notOut);
+    // 输出out
+    Mux16(a=afterF, b=notOut, sel=no, out=res, out=out);
+
+    // zr
+    // 如果结果值的低15位全0，则结果=0
+    Or16(a=res, b[0..15]=false, out[0..7]=lowRes, out[8..14]=highRes);
+    // 不可直接使用res[0..7]，需要先通过某个逻辑门将指定位范围输出
+    Or8Way(in=lowRes, out=lowZr8);
+    Or8Way(in[0..6]=highRes, in[7]=false, out=highZr8);
+    Or(a=lowZr8, b=highZr8, out=notZr);
+    // 输出zr
+    Not(in=notZr, out=zr);
+
+    // ng
+    // 如果最高位为1，并且结果非0，则ng=1
+    Or16(a=res, b[0..15]=false, out[15]=highestRes);
+    Or(a=highestRes, b=false, out=highestResTrue);
+    // 输出ng
+    And(a=highestResTrue, b=notZr, out=ng);
 }

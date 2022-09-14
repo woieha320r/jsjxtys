@@ -27,14 +27,28 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
-    // 根据最大的两个地址选出对应的操作 00 01都是RAM 10是屏幕 11是键盘
-    DMux4Way(in = load, sel = address[13..14], a = loadA, b = loadB, c = loadS, d = loadK);
-    // 00|01 
-    Or(a = loadA, b = loadB, out = loadRam);
-    RAM16K(in = in, load = loadRam, address = address[0..13], out = outRam);
-    Keyboard(out = outK);
-    Screen(in = in, load = loadS, address = address[0..12], out = outS);
-    // 根据最大的两个地址选出对应的操作 00 01都是RAM 10是屏幕 11是键盘
-    Mux4Way16(a = outRam, b = outRam, c = outS, d = outK, sel = address[13..14], out = out);
+    And(a=address[14], b=address[13], out=oo);
+    Or8Way(in=address[5..12], out=hasTrue1);
+    Or8Way(in[0..4]=address[0..4], in[5..7]=false, out=hasTrue2);
+    Or(a=hasTrue1, b=hasTrue2, out=hasTrue);
+    And(a=oo, b=hasTrue, out=errorAccess);
+
+    // 判断ram和screen是否应该读入in
+    DMux4Way(in=load, sel=address[13..14], a=loadRam1, b=loadRam2, c=loadScreen, d=unuse);
+    Or(a=loadRam1, b=loadRam2, out=loadRam);
+
+    // 00............. / 01.............
+    RAM16K(in=in, load=loadRam, address=address[0..13], out=outRam);
+    // 10.............
+    Screen(in=in, load=loadScreen, address=address[0..12], out=outScreen);
+    // 110000000000000
+    Keyboard(out=outKey);
+    // > 110000000000000
+    Not16(in=true, out=outZero);
+
+    // 判断输出哪个芯片的结果
+    Mux4Way16(a=outRam, b=outRam, c=outScreen, d=outKey, sel=address[13..14], out=waitOut);
+
+    // 判断是否无效地址
+    Mux16(a=waitOut, b=outZero, sel=errorAccess, out=out);
 }

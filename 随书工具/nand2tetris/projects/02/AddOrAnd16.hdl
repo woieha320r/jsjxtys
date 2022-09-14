@@ -1,8 +1,0 @@
-CHIP AddOrAnd16 {
-    IN isAdd, a[16], b[16];
-    OUT out[16];
-    PARTS:
-        Add16(a = a[0..15], b = b[0..15], out = add16);
-        And16(a = a[0..15], b = b[0..15], out = and16);
-        Mux16(a = and16, b = add16, sel = isAdd, out = out);
-}

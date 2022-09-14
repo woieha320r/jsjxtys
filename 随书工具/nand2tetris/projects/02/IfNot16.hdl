@@ -1,7 +1,0 @@
-CHIP IfNot16 {
-    IN isNot, in[16];
-    OUT out[16];
-    PARTS:
-        Not16(in = in[0..15], out = notIn);
-        Mux16(a = in[0..15], b = notIn, sel = isNot, out = out);
-}

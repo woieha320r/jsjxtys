@@ -15,10 +15,6 @@ CHIP Register {
 
     PARTS:
     // Put your code here:
-    // Mux(a = dffOut, b = in, sel = load, out = dffIn);
-    // DFF(in = dffIn, out = dffOut);
-    // Or(a = dffOut, b = false, out = out);
-
     Bit(in = in[0], load = load, out = out[0]);
     Bit(in = in[1], load = load, out = out[1]);
     Bit(in = in[2], load = load, out = out[2]);
