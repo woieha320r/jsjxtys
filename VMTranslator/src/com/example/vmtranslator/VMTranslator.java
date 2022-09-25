@@ -12,19 +12,19 @@ public class VMTranslator {
     private static CodeWriter codeWriter;
 
     public static void main(String[] args) throws IOException {
-        String nand2tetrisPath = "***/nand2tetris/";
-        args = new String[]{
-                nand2tetrisPath + "projects/07/MemoryAccess/BasicTest/BasicTest.vm",
-                nand2tetrisPath + "projects/07/MemoryAccess/PointerTest/PointerTest.vm",
-                nand2tetrisPath + "projects/07/MemoryAccess/StaticTest/StaticTest.vm",
-                nand2tetrisPath + "projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm",
-                nand2tetrisPath + "projects/07/StackArithmetic/StackTest/StackTest.vm",
-                nand2tetrisPath + "projects/08/FunctionCalls/FibonacciElement",
-                nand2tetrisPath + "projects/08/FunctionCalls/SimpleFunction/SimpleFunction.vm",
-                nand2tetrisPath + "projects/08/FunctionCalls/StaticsTest",
-                nand2tetrisPath + "projects/08/ProgramFlow/BasicLoop/BasicLoop.vm",
-                nand2tetrisPath + "projects/08/ProgramFlow/FibonacciSeries/FibonacciSeries.vm"
-        };
+        // String nand2tetrisPath = "***/nand2tetris/";
+        // args = new String[]{
+        //         nand2tetrisPath + "projects/07/MemoryAccess/BasicTest/BasicTest.vm",
+        //         nand2tetrisPath + "projects/07/MemoryAccess/PointerTest/PointerTest.vm",
+        //         nand2tetrisPath + "projects/07/MemoryAccess/StaticTest/StaticTest.vm",
+        //         nand2tetrisPath + "projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm",
+        //         nand2tetrisPath + "projects/07/StackArithmetic/StackTest/StackTest.vm",
+        //         nand2tetrisPath + "projects/08/FunctionCalls/FibonacciElement",
+        //         nand2tetrisPath + "projects/08/FunctionCalls/SimpleFunction/SimpleFunction.vm",
+        //         nand2tetrisPath + "projects/08/FunctionCalls/StaticsTest",
+        //         nand2tetrisPath + "projects/08/ProgramFlow/BasicLoop/BasicLoop.vm",
+        //         nand2tetrisPath + "projects/08/ProgramFlow/FibonacciSeries/FibonacciSeries.vm"
+        // };
 
         for (String vmFileName : args) {
             File vmFile = new File(vmFileName);

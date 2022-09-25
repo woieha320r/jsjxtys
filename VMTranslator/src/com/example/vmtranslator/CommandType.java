@@ -2,7 +2,7 @@ package com.example.vmtranslator;
 
 /**
  * 指令类型
- * */
+ */
 public enum CommandType {
 
     PUSH("C_PUSH", "压栈，push local 1"),

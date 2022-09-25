@@ -3,8 +3,6 @@ package com.example.assembler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -81,20 +79,21 @@ public class Assembler {
     }
 
     public static void main(String[] args) throws IOException {
-        List<String> asmFilePahs = new ArrayList<>();
-        String projectPath = "nand2tetris路径";
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/add/Add.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/max/Max.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/max/MaxL.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/rect/Rect.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/rect/RectL.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/pong/Pong.asm");
-        asmFilePahs.add(projectPath + "/随书工具/nand2tetris/projects/06/pong/PongL.asm");
+        // String projectPath = "nand2tetris路径";
+        // args = new String[]{
+        //         projectPath + "/随书工具/nand2tetris/projects/06/add/Add.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/max/Max.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/max/MaxL.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/rect/Rect.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/rect/RectL.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/pong/Pong.asm",
+        //         projectPath + "/随书工具/nand2tetris/projects/06/pong/PongL.asm"
+        // };
 
         Assembler assembler = new Assembler();
         File asmFile;
         SymbolTable symbolTable;
-        for (String asmFilePath : asmFilePahs) {
+        for (String asmFilePath : args) {
             asmFile = new File(asmFilePath);
             symbolTable = new SymbolTable();
             try (Parser parser = new Parser(asmFile)) {

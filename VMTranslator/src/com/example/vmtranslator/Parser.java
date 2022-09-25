@@ -5,7 +5,6 @@ import com.sun.istack.internal.Nullable;
 
 import java.io.*;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * VM翻译器模块：解析器
@@ -116,47 +115,6 @@ public class Parser implements Closeable {
     public void close() throws IOException {
         vmBufferedReader.close();
         vmFileReader.close();
-    }
-
-    // 测试
-    public static void main(String[] args) throws IOException {
-        String asmFileContent = "// 测试解析器\n" +
-                "\n" +
-                "\tfunction test\n" +
-                "\tpush local 0\n" +
-                "\tpop static 1\n" +
-                " label RUN\n" +
-                "\tcall test2\n" +
-                "   goto RUN\n" +
-                "if-goto  RUN \n" +
-                " sub \t \n" +
-                "\treturn\n" +
-                "    \n";
-        String asmFileName = "./test.asm";
-        File asmFile = new File(asmFileName);
-        if (asmFile.exists() && !asmFile.delete()) {
-            throw new IOException(asmFileName + "已存在，删除失败");
-        } else if (!asmFile.createNewFile()) {
-            throw new IOException(asmFileName + "文件创建失败");
-        }
-        try (FileWriter asmFileWriter = new FileWriter(asmFile)) {
-            asmFileWriter.write(asmFileContent);
-            asmFileWriter.flush();
-        }
-        try (Parser parser = new Parser(asmFile)) {
-            while (parser.hasMoreLines()) {
-                System.out.println("=========================================");
-                String command = parser.currentLine;
-                System.out.println("指令：" + command);
-                CommandType commandType = Optional.ofNullable(parser.commandType()).orElseThrow(
-                        () -> new RuntimeException("无法判断的指令类型：" + command)
-                );
-                System.out.println("类型：" + commandType.getName());
-                Optional.ofNullable(parser.arg1()).ifPresent(arg -> System.out.println("arg1：" + arg));
-                Optional.ofNullable(parser.arg2()).ifPresent(arg -> System.out.println("arg2：" + arg));
-                parser.advance();
-            }
-        }
     }
 
 }

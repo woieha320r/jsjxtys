@@ -2,7 +2,7 @@ package com.example.assembler;
 
 /**
  * 指令类型（A、C、L）
- * */
+ */
 public enum InstructionType {
 
     A("A_INSTRUCTION", "A指令，@xxx"),

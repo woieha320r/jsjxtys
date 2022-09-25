@@ -192,7 +192,7 @@ public class CodeWriter implements Closeable {
                 , returnAddressSymbol, returnAddressSymbol));
         Stream.of("LCL", "ARG", "THIS", "THAT").forEachOrdered(symbol ->
                 waitWrite.append(String.format("\t// RAM[SP++] = %s\n\t@%s\n\tD=M\n\t@SP\n\tA=M\n\tM=D\n\t@SP\n\tM=M+1\n"
-                , symbol, symbol)));
+                        , symbol, symbol)));
         waitWrite.append(String.format("\t// ARG = SP-nFrame-nArgs\n\t@%d\n\tD=A\n\t@SP\n\tD=M-D\n\t@%d\n\tD=D-A\n" +
                 "\t@ARG\n\tM=D\n", restoreSymbolIndex.size(), nArgs));
         waitWrite.append("\t// LCL = SP\n\t@SP\n\tD=M\n\t@LCL\n\tM=D\n");
