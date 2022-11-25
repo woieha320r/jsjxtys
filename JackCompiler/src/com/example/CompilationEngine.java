@@ -421,7 +421,7 @@ public class CompilationEngine {
                 vmWriter.writePush(Segment.CONSTANT, strCharArr.length);
                 vmWriter.writeCall("String.new", 1);
                 for (char c : strCharArr) {
-                    // 这里应该用UTF-8码点还是书中的字符集码点？暂且先用UTF-8的吧，测试通过了，那就是用UTF-8
+                    // 书中的码点是兼容ASCII的，UTF-8也兼容ASCII，可以直接用UTF-8的码点
                     vmWriter.writePush(Segment.CONSTANT, c);
                     vmWriter.writeCall("String.appendChar", 2);
                 }
