@@ -1,12 +1,16 @@
 # nand2tetris
+
 ```text
 《计算机系统要素——从零开始构建现代计算机（第2版）》学习记录
-如下部分参考自：https://github.com/woai3c/nand2tetris
-· PC
-· Memory
+
+· 博客：https://woieha320r.github.io/《计算机系统要素——从零开始构建现代计算机（第2版）》
+· GitHub：https://github.com/woieha320r/nand2tetris
 ```
 
+![pongGame](img/0E0E2A85-3D34-4548-91B9-11524467E317.gif)
+
 ### 概述
+
 ```text
 与非门 -> 与、或、非、抑或 -> 选择器、分解器
       ↓
@@ -27,6 +31,7 @@
 ```
 
 ### 要点
+
 ```text
 · 把复杂问题分解为可管理的模块，当使用下一层的模块时，专注于抽象而忽略其实现细节。
 · 多位二进制的表达顺序是[n]～[0]，不是[0]~[n]。
